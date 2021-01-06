@@ -49,7 +49,22 @@ UPDATE employee
 SET manager_id = 1
 WHERE first_name = 'Eduardo' && last_name = 'Coello';
 
--- View employees by manager --
-SELECT first_name, last_name, manager_id
+-- View employees by manager* --
+SELECT *
 FROM employee
 GROUP BY manager_id;
+
+-- Delete departments, roles, and employees --
+DELETE FROM department
+WHERE name = 'Department 1';
+
+DELETE FROM role
+WHERE title ='Manager';
+
+DELETE FROM employee
+WHERE first_name = 'Eduardo' && last_name = 'Coello';
+
+-- View the total utilized budget of a department --
+SELECT SUM(salary)
+FROM role;
+
