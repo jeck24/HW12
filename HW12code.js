@@ -134,82 +134,92 @@ function viewRoles() {
     });
 }
 
-function viewEmployeesdsfd() {
+function addDepartment() {
   inquirer
     .prompt({
-      name: 'actualEmployees',
+      name: 'name',
       type: 'input',
-      message: 'Press enter to see the employees',
+      message: 'Press enter the new department',
     })
     .then(function (answer) {
       connection.query(
-        'SELECT id, song_name, year FROM top5000 WHERE ?',
-        { artist_name: answer.artist },
+        'INSERT INTO department SET ?;',
+        { name: answer.name },
         function (err, res) {
           if (err) throw err;
           console.table(res);
-          runSearch();
+          runQuestion();
         }
       );
     });
 }
 
-
-
-function rangeSearch() {
-  inquirer
-    .prompt([
-      {
-        name: 'start',
+function addRole() {
+    inquirer
+      .prompt([{
+        name: 'name',
         type: 'input',
-        message: 'Enter starting position: ',
-        validate: function (value) {
-          if (isNaN(value) === false) {
-            return true;
-          }
-          return false;
-        },
+        message: 'Enter the name of the new role',
       },
       {
-        name: 'end',
+        name: 'salary',
         type: 'input',
-        message: 'Enter ending position: ',
-        validate: function (value) {
-          if (isNaN(value) === false) {
-            return true;
-          }
-          return false;
-        },
+        message: "Please enter the salary for the role",
       },
-    ])
-    .then(function (answer) {
-      var query =
-        'SELECT id,song_name,artist_name,year FROM top5000 WHERE id BETWEEN ? AND ?';
-      connection.query(query, [answer.start, answer.end], function (err, res) {
-        if (err) throw err;
-        console.table(res);
-        runSearch();
+      {
+          name: 'departmentID',
+          type: 'input',
+          message:'What is the department id of the new role?',
+      }])
+      .then(function (answer) {
+        connection.query(
+          'INSERT INTO role SET ?;',
+          { title: answer.name,
+            salary: answer.salary,
+            department_id: answer.departmentID},
+          function (err, res) {
+            if (err) throw err;
+            console.log(res);
+            runQuestion();
+          }
+        );
       });
-    });
-}
+  }
 
-function songSearch() {
-  inquirer
-    .prompt({
-      name: 'song',
-      type: 'input',
-      message: 'What song would you like to look for?',
-    })
-    .then(function (answer) {
-      console.log(answer.song);
-      connection.query(
-        'SELECT * FROM top5000 WHERE ?',
-        { song_name: answer.song },
-        function (err, res) {
-          if (err) throw err;
-          console.table(res);
-          runSearch();
-        }
-      );
-    });
-}
+  function addEmployee() {
+    inquirer
+      .prompt([{
+        name: 'first_name',
+        type: 'input',
+        message: 'What is the first name of this new employee?',
+      },
+      {
+        name: 'last_name',
+        type: 'input',
+        message: "What is the last name of this new employee?",
+      },
+      {
+          name: 'roleID',
+          type: 'input',
+          message:'What is the role id of this new employee?',
+      },
+        {
+            name: 'managerID',
+            type:'input',
+            message: 'What is the manager id for this new employee?',
+        }])
+      .then(function (answer) {
+        connection.query(
+          'INSERT INTO employee SET ?;',
+          { first_name: answer.first_name,
+            last_name: answer.last_name,
+            role_id: answer.roleID,
+            manager_id: answer.managerID},
+          function (err, res) {
+            if (err) throw err;
+            console.log(res);
+            runQuestion();
+          }
+        );
+      });
+  }
