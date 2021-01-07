@@ -186,7 +186,7 @@ function addRole() {
       });
   }
 
-  function addEmployee() {
+function addEmployee() {
     inquirer
       .prompt([{
         name: 'first_name',
@@ -215,6 +215,122 @@ function addRole() {
             last_name: answer.last_name,
             role_id: answer.roleID,
             manager_id: answer.managerID},
+          function (err, res) {
+            if (err) throw err;
+            console.log(res);
+            runQuestion();
+          }
+        );
+      });
+}
+
+function addRole() {
+    inquirer
+      .prompt([{
+        name: 'name',
+        type: 'input',
+        message: 'Enter the name of the new role',
+      },
+      {
+        name: 'salary',
+        type: 'input',
+        message: "Please enter the salary for the role",
+      },
+      {
+          name: 'departmentID',
+          type: 'input',
+          message:'What is the department id of the new role?',
+      }])
+      .then(function (answer) {
+        connection.query(
+          'INSERT INTO role SET ?;',
+          { title: answer.name,
+            salary: answer.salary,
+            department_id: answer.departmentID},
+          function (err, res) {
+            if (err) throw err;
+            console.log(res);
+            runQuestion();
+          }
+        );
+      });
+  }
+
+function updateRole() {
+    inquirer
+      .prompt([{
+        name: 'first_name',
+        type: 'input',
+        message: 'What is the first name of the employee to change?',
+      },
+      {
+        name: 'last_name',
+        type: 'input',
+        message: "What is the last name of the employee to change?",
+      },
+      {
+          name: 'roleID',
+          type: 'input',
+          message:'What is the new role id of this employee?',
+      }])
+      .then(function (answer) {
+        connection.query(
+          'UPDATE employee SET ? WHERE ? AND ?',
+          [{ role_id: answer.roleID},
+        {first_name: answer.first_name},
+        {last_name: answer.last_name}],
+          function (err, res) {
+            if (err) throw err;
+            console.log(res);
+            runQuestion();
+          }
+        );
+      });
+  }
+
+function updateManager() {
+    inquirer
+      .prompt([{
+        name: 'first_name',
+        type: 'input',
+        message: 'What is the first name of the employee to change?',
+      },
+      {
+        name: 'last_name',
+        type: 'input',
+        message: "What is the last name of the employee to change?",
+      },
+      {
+          name: 'roleID',
+          type: 'input',
+          message:'What is the new manager id of this employee?',
+      }])
+      .then(function (answer) {
+        connection.query(
+          'UPDATE employee SET ? WHERE ? AND ?',
+          [{manager_id: answer.roleID},
+        {first_name: answer.first_name},
+        {last_name: answer.last_name}],
+          function (err, res) {
+            if (err) throw err;
+            console.log(res);
+            runQuestion();
+          }
+        );
+      });
+}
+
+function removeRole() {
+    inquirer
+      .prompt([{
+        name: 'name',
+        type: 'input',
+        message: 'Enter the name of the role to remove',
+      }])
+      .then(function (answer) {
+        connection.query(
+          'DELETE FROM role WHERE ?;',
+          { title: answer.name,},
           function (err, res) {
             if (err) throw err;
             console.log(res);
