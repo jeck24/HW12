@@ -339,3 +339,49 @@ function removeRole() {
         );
       });
   }
+
+  function removeEmployee() {
+    inquirer
+      .prompt([{
+        name: 'first_name',
+        type: 'input',
+        message: 'What is the first name of the employee to remove?',
+      },
+      {
+        name: 'last_name',
+        type: 'input',
+        message: "What is the last name of the employee to remove?",
+      }])
+      .then(function (answer) {
+        connection.query(
+          'DELETE FROM employee WHERE ? AND ?;',
+          [{first_name: answer.first_name},
+        {last_name: answer.last_name}],
+          function (err, res) {
+            if (err) throw err;
+            console.log(res);
+            runQuestion();
+          }
+        );
+      });
+}
+
+function removeDepartment() {
+    inquirer
+      .prompt([{
+        name: 'name',
+        type: 'input',
+        message: 'Enter the name of the department to remove',
+      }])
+      .then(function (answer) {
+        connection.query(
+          'DELETE FROM department WHERE ?;',
+          { name: answer.name,},
+          function (err, res) {
+            if (err) throw err;
+            console.log(res);
+            runQuestion();
+          }
+        );
+      });
+  }
