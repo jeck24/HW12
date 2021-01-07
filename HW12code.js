@@ -385,3 +385,23 @@ function removeDepartment() {
         );
       });
   }
+
+function viewEmployeesByManager() {
+    var query =
+      'SELECT * FROM employee GROUP BY manager_id;';
+    connection.query(query, function (err, res) {
+      if (err) throw err;
+      console.table(res);
+      runQuestion();
+    });
+}
+
+function viewEmployeesByDepartment() {
+    var query =
+      'SELECT * FROM employee GROUP BY department_id;';
+    connection.query(query, function (err, res) {
+      if (err) throw err;
+      console.table(res);
+      runQuestion();
+    });
+}
